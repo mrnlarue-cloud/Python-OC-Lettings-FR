@@ -1,24 +1,42 @@
-import os
+"""Configuration générale du projet Django OC Lettings."""
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# ==================================================
+# CHEMINS DU PROJET
+# ==================================================
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
+
+# ==================================================
+# SÉCURITÉ ET ENVIRONNEMENT
+# ==================================================
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s"
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+    if host.strip()
+]
 
 
-# Application definition
+# ==================================================
+# APPLICATIONS INSTALLÉES
+# ==================================================
+
 
 INSTALLED_APPS = [
     "oc_lettings_site.apps.OCLettingsSiteConfig",
@@ -30,6 +48,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+# ==================================================
+# MIDDLEWARES
+# ==================================================
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -40,8 +62,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "oc_lettings_site.urls"
+# ==================================================
+# ROUTAGE ET TEMPLATES
+# ==================================================
 
+ROOT_URLCONF = "oc_lettings_site.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -60,10 +85,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "oc_lettings_site.wsgi.application"
 
+# ==================================================
+# BASE DE DONNÉES
+# ==================================================
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -72,8 +99,11 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
+# ==================================================
+# VALIDATION DES MOTS DE PASSE
+# ==================================================
+
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -91,8 +121,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# ==================================================
+# INTERNATIONALISATION
+# ==================================================
+
 # Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
@@ -100,17 +134,26 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 
+# ==================================================
+# FICHIERS STATIQUES
+# ==================================================
+
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATIC_URL = "/static/"
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# ==================================================
+# CONFIGURATION DES CLÉS PRIMAIRES
+# ==================================================
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
