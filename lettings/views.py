@@ -12,7 +12,7 @@ def index(request):
     """Affiche la liste des locations."""
     lettings_list = Letting.objects.all()
     context = {"lettings_list": lettings_list}
-    return render(request, "lettings_index.html", context)
+    return render(request, "temp_lettings/index.html", context)
 
 
 # ==================================================
@@ -27,4 +27,4 @@ def letting(request, letting_id):
         "title": letting.title,
         "address": letting.address,
     }
-    return render(request, "letting.html", context)
+    return render(request, "temp_lettings/letting.html", context)

@@ -12,7 +12,7 @@ def index(request):
     """Affiche la liste de profils utilisateurs."""
     profiles_list = Profile.objects.all()
     context = {"profiles_list": profiles_list}
-    return render(request, "profiles_index.html", context)
+    return render(request, "temp_profiles/index.html", context)
 
 
 # ==================================================
@@ -24,4 +24,4 @@ def profile(request, username):
     """Affiche les informations d'un utilisateur précis."""
     profile = Profile.objects.get(user__username=username)
     context = {"profile": profile}
-    return render(request, "profile.html", context)
+    return render(request, "temp_profiles/profile.html", context)
