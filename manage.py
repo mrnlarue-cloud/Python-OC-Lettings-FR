@@ -1,8 +1,16 @@
+"""Fichier permettant de lancer les commandes Django depuis le terminal."""
+
 import os
 import sys
 
+# ==================================================
+# FONCTION : EXECUTION DES COMMANDES DJANGO
+# ==================================================
+
 
 def main():
+    """Exécute les commandes Django depuis le terminal."""
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "oc_lettings_site.settings")
     try:
         from django.core.management import execute_from_command_line
@@ -14,6 +22,10 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+
+# ==================================================
+# LANCEMENT
+# ==================================================
 
 if __name__ == "__main__":
     main()
