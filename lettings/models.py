@@ -4,7 +4,7 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinLengthValidator
 
 # ==================================================
-# MODÈLE : ADDRESS
+# MODELE : ADDRESS
 # ==================================================
 
 
@@ -20,13 +20,18 @@ class Address(models.Model):
         max_length=3, validators=[MinLengthValidator(3)]
     )
 
+    class Meta:
+        """Définit les options d'affichage du modèle."""
+
+        verbose_name_plural = "Addresses"
+
     def __str__(self):
         """Retourne le numéro et le nom de la rue."""
         return f"{self.number} {self.street}"
 
 
 # ==================================================
-# MODÈLE : LETTING (location immobilière)
+# MODELE : LETTING (location immobilière)
 # ==================================================
 
 
