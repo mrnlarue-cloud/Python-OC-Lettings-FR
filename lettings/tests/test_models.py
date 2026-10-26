@@ -3,7 +3,7 @@
 import pytest
 from django.core.exceptions import ValidationError
 
-from lettings.models import Address
+from lettings.models import Address, Letting
 
 # ==================================================
 # TESTS UNITAIRES - ADDRESS
@@ -69,3 +69,31 @@ def test_address_country_iso_code():
 # ==================================================
 # TESTS D'INTEGRATION
 # ==================================================
+
+
+@pytest.mark.django_db
+def test_letting_address_relation():
+    """Vérifie qu'une adresse est liée à une location et inversement."""
+    address = Address.objects.create(
+        number=123,
+        street="Main Street",
+        city="Los Angeles",
+        state="CA",
+        zip_code=9999,
+        country_iso_code="USA",
+    )
+
+    letting = Letting.objects.create(
+        title="Appartement de test",
+        address=address,
+    )
+
+    # Récupère la location depuis la BD
+    letting_saved = Letting.objects.get(pk=letting.pk)
+
+    # Vérification de la bonne association
+    assert letting_saved.address == address
+
+    # Vérification de la relation inverse
+    address_saved = Address.objects.get(pk=address.pk)
+    assert address_saved.letting == letting_saved
