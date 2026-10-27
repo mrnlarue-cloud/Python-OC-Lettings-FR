@@ -97,3 +97,25 @@ def test_letting_address_relation():
     # Vérification de la relation inverse
     address_saved = Address.objects.get(pk=address.pk)
     assert address_saved.letting == letting_saved
+
+
+@pytest.mark.django_db
+def test_letting_deleted_address():
+    """Vérifie que la suppression d'une adresse supprime la location."""
+    address = Address.objects.create(
+        number=123,
+        street="Main Street",
+        city="Los Angeles",
+        state="CA",
+        zip_code=9999,
+        country_iso_code="USA",
+    )
+
+    letting = Letting.objects.create(
+        title="Appartement de test",
+        address=address,
+    )
+
+    address.delete()
+
+    assert not Letting.objects.filter(pk=letting.pk).exists()
