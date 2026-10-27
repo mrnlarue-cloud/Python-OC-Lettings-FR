@@ -52,3 +52,40 @@ def test_letting_detail(client):
     assert reponse.status_code == 200
     assert "Appartement Test" in contenu
     assert "123 Main Street" in contenu
+
+
+# ==================================================
+# TESTS DES VUES - LISTE DES LOCATIONS - INTEGRATION
+# ==================================================
+
+
+@pytest.mark.django_db
+def test_lettings_listen(client):
+    """Vérifie l'affichage d'une location dans la liste."""
+
+    # Création d'une location et de son adresse en BD
+    address = Address.objects.create(
+        number=123,
+        street="Main Street",
+        city="Los Angeles",
+        state="CA",
+        zip_code=9999,
+        country_iso_code="USA",
+    )
+
+    # Création de la location associée à l'adresse
+    letting = Letting.objects.create(
+        title="Appartement Test",
+        address=address,
+    )
+
+    # Simulation d'une visite sur la liste des locations
+    reponse = client.get("/lettings/")
+    contenu = reponse.content.decode()
+
+    # Vérifie que la page fonctionne et affiche la location
+    assert reponse.status_code == 200
+    assert "Appartement Test" in contenu
+
+    # Vérifie que lien dirige vers la location voulue
+    assert f'href="/lettings/{letting.pk}/"' in contenu
