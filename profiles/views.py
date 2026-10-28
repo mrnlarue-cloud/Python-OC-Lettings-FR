@@ -1,6 +1,6 @@
 """Vues de l'application profiles."""
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Profile
 
 # ==================================================
@@ -22,6 +22,6 @@ def index(request):
 
 def profile(request, username):
     """Affiche les informations d'un utilisateur précis."""
-    profile = Profile.objects.get(user__username=username)
+    profile = get_object_or_404(Profile, user__username=username)
     context = {"profile": profile}
     return render(request, "temp_profiles/profile.html", context)
