@@ -59,3 +59,22 @@ def test_affichage_profil_demande(client):
     # Vérifie que les infos de Pamela ne soient pas affichées
     assert "pamela@example.com" not in contenu
     assert "Laguna Woods" not in contenu
+
+
+# ==================================================
+# TESTS DES VUES - UTILISATEUR SANS PROFIL - INTEGRATION
+# ==================================================
+
+
+@pytest.mark.django_db
+def test_utilisateur_sans_profil_404(client):
+    """Un 'user' sans profil renvoie une erreur 404."""
+
+    # Création d'un 'user' sans profil attribué
+    User.objects.create_user(username="no_name")
+
+    # Demande d'affichage de no_name sans profil attribué
+    reponse = client.get("/profiles/no_name/")
+
+    # Vérification de l'erreur 404
+    assert reponse.status_code == 404
