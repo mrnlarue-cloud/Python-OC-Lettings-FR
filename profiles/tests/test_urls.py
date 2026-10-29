@@ -17,11 +17,31 @@ def test_url_profile():
         kwargs={"username": "bobby_test"},
     )
 
-    # Vérification que Django crée la bonne adresse
-    correspondance = resolve(adresse)
+    # Vérification que Django construit la bonne adresse
+    assert adresse == "/profiles/bobby_test/"
 
     # Vérification que l'adresse amène à la bonne fonction
+    correspondance = resolve(adresse)
     assert correspondance.func == views.profile
 
     # Vérification de la transmission du bon 'user'
     assert correspondance.kwargs == {"username": "bobby_test"}
+
+
+# ==================================================
+# TESTS DES URL - LISTE DES PROFILS INTEGRATION
+# ==================================================
+
+
+def test_liste_url_profils():
+    """Vérifie que l'URL dirige vers la liste de tous les profils."""
+
+    # Construction de l'adresse de la liste des profils par Django
+    adresse = reverse("profiles:index")
+
+    # Vérification de la bonne construction d'adresse par Django
+    assert adresse == "/profiles/"
+
+    # Vérification de l'adresse avec la fonction index()
+    correspondance = resolve(adresse)
+    assert correspondance.func == views.index
