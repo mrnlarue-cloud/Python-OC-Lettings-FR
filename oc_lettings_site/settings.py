@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import sentry_sdk
 
 # ==================================================
 # CHEMINS DU PROJET
@@ -11,6 +12,15 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
+
+# ==================================================
+# SURVEILLANCE DES ERREURS - SENTRY
+# ==================================================
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+    send_default_pii=False,
+)
 
 
 # ==================================================
