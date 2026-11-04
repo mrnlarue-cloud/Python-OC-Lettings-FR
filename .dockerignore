@@ -1,0 +1,19 @@
+# Environnement et secrets
+.env*
+.venv/
+
+# Git et PyCharm
+.git/
+.idea/
+
+# Fichiers temporaires Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Rapports de couverture
+.coverage
+coverage-report.txt
+
+# Base de données locale
+*.sqlite3
