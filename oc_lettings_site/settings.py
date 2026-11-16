@@ -2,8 +2,10 @@
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+
+import dj_database_url
 import sentry_sdk
+from dotenv import load_dotenv
 
 # ==================================================
 # CHEMINS DU PROJET
@@ -43,6 +45,12 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+# Configuration HTTPS pour Render
+if os.getenv("DATABASE_URL"):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
 # ==================================================
 # APPLICATIONS INSTALLEES
 # ==================================================
@@ -65,6 +73,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -100,12 +109,21 @@ WSGI_APPLICATION = "oc_lettings_site.wsgi.application"
 # ==================================================
 
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "oc-lettings-site.sqlite3"),
+
+if os.getenv("DATABASE_URL"):
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "oc-lettings-site.sqlite3"),
+        }
+    }
 
 # ==================================================
 # VALIDATION DES MOTS DE PASSE
@@ -148,6 +166,15 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # ==================================================
 # JOURNALISATION DES ERREURS
