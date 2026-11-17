@@ -16,7 +16,7 @@ COPY requirements.txt .
 # ==================================================
 # INSTALLATION AUTOMATIQUE DES DEPENDANCES
 # ==================================================
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --timeout 86400 --retries 10 -r requirements.txt
 
 # ==================================================
 # COPIE DU CODE DE L'APPLICATION
@@ -31,6 +31,6 @@ EXPOSE 8000
 # ==================================================
 # DEMARRAGE DU SERVEUR DJANGO EN PRODUCTION
 # ==================================================
-CMD python manage.py collectstatic --noinput \
-    && exec gunicorn oc_lettings_site.wsgi:application \
-    --bind "0.0.0.0:${PORT:-8000}"
+CMD python manage.py collectstatic --noinput && \
+    exec gunicorn oc_lettings_site.wsgi:application \
+    --bind 0.0.0.0:${PORT:-8000}
