@@ -83,3 +83,9 @@ jobs:
           tags: |
             ${{ vars.DOCKERHUB_USERNAME }}/oc-lettings:${{ github.sha }}
             ${{ vars.DOCKERHUB_USERNAME }}/oc-lettings:latest
+
+      # Déploiement Render après publication réussie sur DockerHub
+      - name: Déploiement sur Render
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: curl --fail --silent --show-error -X POST "$RENDER_DEPLOY_HOOK"
