@@ -1,7 +1,11 @@
 """Vues de l'application lettings."""
 
+import logging
+
 from django.shortcuts import get_object_or_404, render
 from .models import Letting
+
+logger = logging.getLogger(__name__)
 
 # ==================================================
 # VUE : LISTE DES LOCATIONS
@@ -23,6 +27,7 @@ def index(request):
 def letting(request, letting_id):
     """Affiche les informations d'une location précise."""
     letting = get_object_or_404(Letting, id=letting_id)
+    logger.info("Location trouvée dans la base (id=%s)", letting_id)
     context = {
         "title": letting.title,
         "address": letting.address,
