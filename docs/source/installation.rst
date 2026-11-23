@@ -1,13 +1,16 @@
+=========================
 Installation et démarrage
 =========================
 
+------------------------------------------
 Présentation
-------------
+------------------------------------------
 
 Voici la partie de la documentation qui permet d'expliquer comment installer l'application ORANGE COUNTY LETTINGS sur n'importe quel ordinateur. De même, c'est aussi ce qui donne la ligne à suivre pour lancer cette application en local dans un environnement dédié.
 
+------------------------------------------
 Les prérequis
--------------
+------------------------------------------
 
 Avant de débuter sur l'application ORANGE COUNTY LETTINGS, il nous faut disposer des outils suivants :
 
@@ -17,8 +20,9 @@ Avant de débuter sur l'application ORANGE COUNTY LETTINGS, il nous faut dispose
 Le fichier ``requirements.txt`` vient répertorier les dépendances nécessaires à l'application.
 
 
+------------------------------------------
 La récupération du projet
--------------------------
+------------------------------------------
 
 Le code source est disponible sur `GitHub <https://github.com/mrnlarue-cloud/Python-OC-Lettings-FR>`_.
 
@@ -35,8 +39,9 @@ Accéder au répertoire du projet :
    cd Python-OC-Lettings-FR
 
 
+------------------------------------------
 Installation des dépendances
-----------------------------
+------------------------------------------
 
 Il nous faut créer et activer un environnement virtuel :
 
@@ -52,8 +57,9 @@ Et ensuite, installer les dépendances :
    python -m pip install -r requirements.txt
 
 
+------------------------------------------
 Configuration de l'environnement
---------------------------------
+------------------------------------------
 
 Les variables d'environnement sont définies dans un fichier de type ``.env``. Comme elles ne sont pas à partager, il faut créer votre propre fichier à partir du modèle fourni :
 
@@ -72,8 +78,9 @@ Pour le développement en local, définir ``DJANGO_DEBUG=True`` et autoriser ``l
 Encore une fois, le fichier ``.env`` ne doit surtout pas être publié sur GitHub.
 
 
+------------------------------------------
 Base de données
----------------
+------------------------------------------
 
 Ici, une particularité : comme l'application utilise SQLite en développement local et PostgreSQL en production, en l'absence de variable ``DATABASE_URL``, Django utilisera automatiquement la base SQLite locale.
 
@@ -86,8 +93,9 @@ Il faudra alors appliquer des migrations :
 Ces migrations vont créer les tables nécessaires, mais ne chargeront pas automatiquement les données de démonstration.
 
 
+------------------------------------------
 Démarrage de l'application
---------------------------
+------------------------------------------
 
 Pour le démarrage du serveur Django :
 
@@ -102,8 +110,9 @@ http://127.0.0.1:8000/
 Les locations immobilières et les profils utilisateurs sont accessibles depuis la page d'accueil.
 
 
+------------------------------------------
 Administration
---------------
+------------------------------------------
 
 L'interface administrateur est disponible à l'URL :
 
@@ -116,8 +125,9 @@ Si nécessaire, pour la création d'un compte administrateur :
    python manage.py createsuperuser
 
 
+------------------------------------------
 Tests et qualité du code
------------------------
+------------------------------------------
 
 Exécution des tests avec Pytest :
 
