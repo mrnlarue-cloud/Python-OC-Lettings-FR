@@ -31,3 +31,5 @@ Elle permet de même d'expliquer les procédures de test, du déploiement et de 
 .. toctree::
    :maxdepth: 2
    :caption: Sommaire
+
+   installation
