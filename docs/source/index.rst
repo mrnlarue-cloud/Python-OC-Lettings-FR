@@ -28,8 +28,11 @@ La documentation technique vient représenter les phases d'installation, de conf
 
 Elle permet de même d'expliquer les procédures de test, du déploiement et de la maintenance de ce projet.
 
+
 .. toctree::
    :maxdepth: 2
    :caption: Sommaire
 
    installation
+   architecture
+   deploiement
