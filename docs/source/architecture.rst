@@ -1,11 +1,9 @@
 ========================
 Mon architecture Django
 ========================
-
 ------------------------------------------
 L'organisation de mon projet
 ------------------------------------------
-
 Pour la réfactorisation de ce projet, je suis partie sur une logique "Fat Models", "Skinny Views" et une architecture modulaire. Le principe était de pouvoir garder la logique métier avec les modèles et des vues simples.
 
 J'ai donc divisé le projet en trois applications Django :
@@ -17,7 +15,6 @@ J'ai donc divisé le projet en trois applications Django :
 ------------------------------------------
 Les modèles et la base de données
 ------------------------------------------
-
 Ce projet utilise trois modèles principaux :
 
 * ``Address`` : pour les informations relatives aux adresses.
@@ -29,3 +26,23 @@ Les modèles ``Address`` et ``Letting`` se trouvent dans ``lettings/models.py``,
 Chaque location est associée à une adresse avec une relation ``OneToOneField``. Enfin, chaque profil est lié à un utilisateur Django.
 
 Ici, c'est SQLite qui est utilisé en local et PostgreSQL pour la partie production.
+
+------------------------------------------
+Les vues, les URL et les templates
+------------------------------------------
+Mes URL principales se trouvent dans ``oc_lettings_site/urls.py`` et les applications ``lettings`` et ``profiles`` possèdent leurs propres fichiers ``urls.py`` et ``views.py``.
+
+Les routes principales du site sont :
+
+* ``/`` : page d'accueil.
+* ``/lettings/`` : liste des locations.
+* ``/lettings/<int:letting_id>/`` : détail d'une location.
+* ``/profiles/`` : liste des profils.
+* ``/profiles/<str:username>/`` : détail d'un profil.
+* ``/admin/`` : interface d'administration.
+
+De leur côté, les templates sont répartis dans ces dossiers :
+
+* ``templates/`` : accueil, base commune et pages d'erreur.
+* ``lettings/templates/temp_lettings/`` : pages des locations.
+* ``profiles/templates/temp_profiles/`` : pages des profils.
