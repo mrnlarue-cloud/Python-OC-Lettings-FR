@@ -1,0 +1,20 @@
+# CONFIGURATION DE READ THE DOCS
+# Version
+version: 2
+
+# ENVIRONNEMENT DE CONSTRUCTION
+# Définit le système et la version de Python
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3.11"
+
+# CONFIGURATION SPHINX
+# Localisation du fichier de configuration Sphinx
+sphinx:
+  configuration: docs/source/conf.py
+
+# INSTALLATION DES DÉPENDANCES
+python:
+  install:
+    - requirements: requirements.txt
