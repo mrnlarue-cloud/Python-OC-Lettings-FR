@@ -1,77 +1,102 @@
-## Résumé
+# *ORANGE COUNTY LETTINGS*
 
-Site web d'Orange County Lettings
+**Projet 13 — OpenClassrooms**  
+**Réfactorisation effectuée par Marion LARUE**
 
-## Développement local
+**Lien GitHub :** https://github.com/mrnlarue-cloud/Python-OC-Lettings-FR
 
-### Prérequis
+## *Présentation*
 
-- Compte GitHub avec accès en lecture à ce repository
-- Git CLI
-- SQLite3 CLI
-- Interpréteur Python, version 3.6 ou supérieure
+Il s'agit ici d'une application Django de consultation de locations immobilières et de profils utilisateurs dans le comté d'Orange, aux États-Unis. La réfactorisation a été faite de manière modulaire avec un déploiement automatisé.
 
-Dans le reste de la documentation sur le développement local, il est supposé que la commande `python` de votre OS shell exécute l'interpréteur Python ci-dessus (à moins qu'un environnement virtuel ne soit activé).
+## *Architecture*
 
-### macOS / Linux
+```text
+Python-OC-Lettings-FR/
+├── oc_lettings_site/         # Configuration et accueil
+├── lettings/                # Adresses et locations
+├── profiles/                # Profils utilisateurs
+├── templates/               # Templates communs
+├── static/                  # Fichiers statiques
+├── docs/source/             # Documentation Sphinx
+├── .github/workflows/ci.yml # Pipeline CI/CD
+├── Dockerfile
+├── .env.exemple
+├── manage.py
+├── requirements.txt
+└── README.md
+```
 
-#### Cloner le repository
+Les applications `lettings` et `profiles` possèdent leurs propres vues, modèles et tests. L'application `oc_lettings_site` gère la configuration et l'accueil du site. C'est un projet qui utilise SQLite en local et PostgreSQL en production.
 
-- `cd /path/to/put/project/in`
-- `git clone https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR.git`
+## *Concernant l'installation et le démarrage*
 
-#### Créer l'environnement virtuel
+**Les prérequis :** Python 3.11 ainsi que Git.
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `python -m venv venv`
-- `apt-get install python3-venv` (Si l'étape précédente comporte des erreurs avec un paquet non trouvé sur Ubuntu)
-- Activer l'environnement `source venv/bin/activate`
-- Confirmer que la commande `python` exécute l'interpréteur Python dans l'environnement virtuel
-`which python`
-- Confirmer que la version de l'interpréteur Python est la version 3.6 ou supérieure `python --version`
-- Confirmer que la commande `pip` exécute l'exécutable pip dans l'environnement virtuel, `which pip`
-- Pour désactiver l'environnement, `deactivate`
+```powershell
+git clone https://github.com/mrnlarue-cloud/Python-OC-Lettings-FR.git
+cd Python-OC-Lettings-FR
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
-#### Exécuter le site
+Sur Linux/macOS, activer l'environnement avec `source .venv/bin/activate`.
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
-- `pip install --requirement requirements.txt`
-- `python manage.py runserver`
-- Aller sur `http://localhost:8000` dans un navigateur.
-- Confirmer que le site fonctionne et qu'il est possible de naviguer (vous devriez voir plusieurs profils et locations).
+Créer un fichier `.env` à partir de `.env.exemple` et renseigner la clé secrète Django.
 
-#### Linting
+```powershell
+python manage.py migrate
+python manage.py runserver
+```
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
-- `flake8`
+**Site :** http://localhost:8000/
 
-#### Tests unitaires
+## *Concernant l'administration et la base de données*
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
-- `pytest`
+**Administration :** http://localhost:8000/admin/
 
-#### Base de données
+Identifiants de démonstration locale initiaux :
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- Ouvrir une session shell `sqlite3`
-- Se connecter à la base de données `.open oc-lettings-site.sqlite3`
-- Afficher les tables dans la base de données `.tables`
-- Afficher les colonnes dans le tableau des profils, `pragma table_info(Python-OC-Lettings-FR_profile);`
-- Lancer une requête sur la table des profils, `select user_id, favorite_city from
-  Python-OC-Lettings-FR_profile where favorite_city like 'B%';`
-- `.quit` pour quitter
+- Utilisateur : `admin`
+- Mot de passe : `Abc1234!`
 
-#### Panel d'administration
+Attention : ne pas utiliser ces identifiants en production.
 
-- Aller sur `http://localhost:8000/admin`
-- Connectez-vous avec l'utilisateur `admin`, mot de passe `Abc1234!`
+Pour consulter les tables SQLite : `sqlite3 oc-lettings-site.sqlite3`, puis `.tables`.
 
-### Windows
+## *Concernant les tests et la qualité du code*
 
-Utilisation de PowerShell, comme ci-dessus sauf :
+```powershell
+python -m pytest
+python -m flake8 --config=setup.cfg . --extend-exclude=.venv
+```
 
-- Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
-- Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+Pour ce projet, une couverture de tests supérieure à 80 % était exigée et c'est bien le cas ici.
+
+## *Concernant le déploiement*
+
+**GitHub → GitHub Actions → Docker Hub → Render**
+
+GitHub Actions exécute les tests ainsi que Flake8. Après validation sur `master`, une image Docker est publiée et le déploiement Render se déclenche.
+
+Pour reproduire ce déploiement :
+
+1. Configurer la variable GitHub `DOCKERHUB_USERNAME` et les secrets `DOCKERHUB_TOKEN` et `RENDER_DEPLOY_HOOK`.
+2. Créer une base PostgreSQL et un service web Render utilisant l'image `marionlarue/oc-lettings:latest`.
+3. Configurer sur Render : `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=False`, `DJANGO_ALLOWED_HOSTS`, `DATABASE_URL` et `SENTRY_DSN`.
+4. Enfin, il faut appliquer les migrations Django sur PostgreSQL et configurer le Deploy Hook dans GitHub.
+
+Relativement à la récupération de l'image Docker :
+
+```powershell
+docker pull marionlarue/oc-lettings:latest
+```
+
+**Pipeline :** https://github.com/mrnlarue-cloud/Python-OC-Lettings-FR/actions
+
+## *Concernant la documentation*
+
+La documentation Sphinx vient détailler toute l'installation, l'architecture, le déploiement et la surveillance grâce à Sentry.
+
+**Read the Docs :**
