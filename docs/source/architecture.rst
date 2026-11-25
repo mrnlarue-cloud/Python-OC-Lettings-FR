@@ -46,3 +46,14 @@ De leur côté, les templates sont répartis dans ces dossiers :
 * ``templates/`` : accueil, base commune et pages d'erreur.
 * ``lettings/templates/temp_lettings/`` : pages des locations.
 * ``profiles/templates/temp_profiles/`` : pages des profils.
+
+------------------------------------------
+Petit guide d'utilisation
+------------------------------------------
+L'application permet de consulter les locations immobilières et les profils utilisateurs. Depuis la page d'accueil, deux boutons permettent d'accéder aux différentes listes.
+
+Pour consulter une location, il suffit de cliquer sur "Lettings", puis de sélectionner une location dans la liste. Une nouvelle page affiche alors son nom et son adresse.
+
+Pour consulter un profil utilisateur, le principe est le même. Il faut cliquer sur "Profiles", puis sélectionner un utilisateur pour afficher son nom et sa ville favorite.
+
+Enfin, une interface d'administration Django est accessible depuis ``/admin/``. Elle permet aux utilisateurs autorisés de gérer les données de l'application.
