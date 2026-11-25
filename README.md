@@ -99,4 +99,4 @@ docker pull marionlarue/oc-lettings:latest
 
 La documentation Sphinx vient détailler toute l'installation, l'architecture, le déploiement et la surveillance grâce à Sentry.
 
-**Read the Docs :**
+**Read the Docs :** https://oc-lettings-marion-larue.readthedocs.io/fr/latest/
