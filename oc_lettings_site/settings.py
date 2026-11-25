@@ -18,9 +18,11 @@ load_dotenv(BASE_DIR / ".env")
 # SURVEILLANCE DES ERREURS - SENTRY
 # ==================================================
 
-# Limite les données personnelles envoyées à Sentry avec les erreurs
+# Limite les données personnelles envoyées à Sentry
+# Active la remontée des logs de l'app
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN"),
+    enable_logs=True,
     data_collection={
         "user_info": False,
         "http_bodies": [],
@@ -78,6 +80,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
